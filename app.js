@@ -14,7 +14,7 @@ const offlineMessage = document.getElementById("offlineMessage");
 const errorMessage = document.getElementById("errorMessage");
 const noResultsMessage = document.getElementById("noResultsMessage");
 
-const API_URL = "http://localhost:3000/api/games";
+const API_URL = "https://proxy-server-production-14c6.up.railway.app/api/games";
 
 async function fetchAndRenderGames(query = "") {
   loadingMessage.style.display = "block";
