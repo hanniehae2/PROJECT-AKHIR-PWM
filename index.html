@@ -2,51 +2,80 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAMEVERSE</title>
+    <meta charset="UTF-8"> <!-- Set encoding ke UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design -->
+    <title>GAMEVERSE</title> <!-- Judul Tab -->
+
+    <!-- Import file CSS -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Link ke manifest buat PWA -->
     <link rel="manifest" href="manifest.json">
+
+    <!-- Import font Poppins dari Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Import Font Awesome buat icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 
 <body>
+    <!-- Header & Navbar -->
     <header>
         <nav class="navbar">
             <div class="container">
                 <h1>GAMEVERSE</h1>
                 <div class="nav-links">
+                    <!-- Link Home -->
                     <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
+                    <!-- Link ke halaman Favorites -->
                     <a href="favorites.html"><i class="fas fa-heart"></i> Favorites</a>
                 </div>
             </div>
         </nav>
     </header>
 
+    <!-- Bagian Utama -->
     <main class="container">
+
+        <!-- Section: Pencarian -->
         <section class="search-section">
-            <input type="text" id="searchInput" placeholder="Cari Game...">
-            <button id="searchButton"><i class="fas fa-search"></i> Cari</button>
+            <input type="text" id="searchInput" placeholder="Cari Game..."> <!-- Input cari game -->
+            <button id="searchButton"><i class="fas fa-search"></i> Cari</button> <!-- Tombol cari -->
         </section>
 
+        <!-- Section: List Game -->
         <section class="game-list-section">
             <h2 class="section-title">Daftar Game Gratis</h2>
             <div id="gameList" class="game-grid">
+                
+                <!-- Pesan Loading -->
                 <p id="loadingMessage" class="info-message">Memuat game...</p>
-                <p id="offlineMessage" class="info-message offline-info" style="display: none;">Anda sedang offline.
-                    Menampilkan game dari cache.</p>
-                <p id="errorMessage" class="info-message error-info" style="display: none;">Terjadi kesalahan saat
-                    memuat game. Coba lagi nanti.</p>
-                <p id="noResultsMessage" class="info-message" style="display: none;">Tidak ada game yang ditemukan.</p>
+                
+                <!-- Pesan Offline -->
+                <p id="offlineMessage" class="info-message offline-info" style="display: none;">
+                    Anda sedang offline. Menampilkan game dari cache.
+                </p>
+                
+                <!-- Pesan Error -->
+                <p id="errorMessage" class="info-message error-info" style="display: none;">
+                    Terjadi kesalahan saat memuat game. Coba lagi nanti.
+                </p>
+                
+                <!-- Pesan No Results -->
+                <p id="noResultsMessage" class="info-message" style="display: none;">
+                    Tidak ada game yang ditemukan.
+                </p>
             </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2025 GAMEVERSE x ARDHEA. All rights reserved.</p>
     </footer>
 
+    <!-- Script untuk IndexedDB & Logika aplikasi -->
     <script src="idb-utility.js"></script>
     <script src="app.js"></script>
 </body>

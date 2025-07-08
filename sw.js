@@ -1,31 +1,33 @@
-const CACHE_NAME = "gameverse-pwa-cache-v2"; // Ubah versi cache jika ada perubahan aset
-const API_CACHE_NAME = "gameverse-api-cache-v1"; // Cache untuk data API
+// Nama cache untuk aset aplikasi (App Shell) dan API
+const CACHE_NAME = "gameverse-pwa-cache-v2"; // Versi cache untuk aset statis
+const API_CACHE_NAME = "gameverse-api-cache-v1"; // Versi cache khusus untuk data API
 
+// Daftar file statis yang akan dicache saat instalasi Service Worker
 const ASSETS_TO_CACHE = [
-  "/", // Root path for start_url
+  "/", // Halaman utama (root)
   "index.html",
   "detail.html",
   "favorites.html", // Halaman favorit
   "style.css",
   "app.js",
-  "idb-utility.js", // IndexedDB utility script
+  "idb-utility.js", // Utility script untuk IndexedDB
   "manifest.json",
-  // Pastikan path ke ikon yang Anda gunakan benar
-  "assets/icon-192x192.png",
+  "assets/icon-192x192.png", // Ikon PWA
   "assets/icon-512x512.png",
   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css", // Font Awesome
   "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap", // Google Fonts
 ];
 
-// Event: Install Service Worker
+// Event: Install → untuk cache App Shell
 self.addEventListener("install", (event) => {
   console.log("Service Worker: Installing...");
+
   event.waitUntil(
     caches
-      .open(CACHE_NAME)
+      .open(CACHE_NAME) // Buka cache
       .then((cache) => {
         console.log("Service Worker: Caching App Shell");
-        return cache.addAll(ASSETS_TO_CACHE);
+        return cache.addAll(ASSETS_TO_CACHE); // Cache semua aset statis
       })
       .catch((error) => {
         console.error("Service Worker: App Shell caching failed", error);
@@ -33,45 +35,47 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// Event: Activate Service Worker
+// Event: Activate → membersihkan cache lama
 self.addEventListener("activate", (event) => {
   console.log("Service Worker: Activating...");
-  // Clean up old caches
+
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME && cacheName !== API_CACHE_NAME) {
             console.log("Service Worker: Clearing old cache", cacheName);
-            return caches.delete(cacheName);
+            return caches.delete(cacheName); // Hapus cache lama
           }
         })
       );
     })
   );
-  return self.clients.claim(); // Immediately control clients
+
+  return self.clients.claim(); // Agar langsung mengontrol halaman aktif
 });
 
-// Event: Fetch requests
+// Event: Fetch → menangani request
 self.addEventListener("fetch", (event) => {
   const requestUrl = new URL(event.request.url);
 
-  // Cache-First, then Network for App Shell assets
+  // Strategi: Cache-first untuk App Shell
   if (
-    ASSETS_TO_CACHE.includes(requestUrl.pathname) ||
-    requestUrl.origin === self.location.origin
+    ASSETS_TO_CACHE.includes(requestUrl.pathname) || // Jika file termasuk daftar cache
+    requestUrl.origin === self.location.origin // Atau berasal dari domain yang sama
   ) {
     event.respondWith(
       caches.match(event.request).then((response) => {
+        // Jika ada di cache, pakai cache. Kalau tidak, fetch ke jaringan.
         return response || fetch(event.request);
       })
     );
   }
-  // Cache-First, then Network for API data (Stale-While-Revalidate-like)
-  // Applies to the main games list API and individual game detail API
+
+  // Strategi: Cache-first + Stale-While-Revalidate untuk API (FreeToGame)
   else if (
-    requestUrl.host === "www.freetogame.com" &&
-    requestUrl.pathname.startsWith("/api/")
+    requestUrl.host === "www.freetogame.com" && // Domain API
+    requestUrl.pathname.startsWith("/api/") // Path API
   ) {
     event.respondWith(
       caches
@@ -80,32 +84,26 @@ self.addEventListener("fetch", (event) => {
           return cache.match(event.request).then((cachedResponse) => {
             const fetchPromise = fetch(event.request)
               .then((networkResponse) => {
-                // Put a copy of the response in the cache
-                cache.put(event.request, networkResponse.clone());
-                return networkResponse;
+                cache.put(event.request, networkResponse.clone()); // Update cache
+                return networkResponse; // Return data dari network
               })
               .catch((error) => {
-                console.log(
-                  "Service Worker: Network fetch failed for API:",
-                  error
-                );
-                // If network fails and there's a cached response, return it.
-                // Otherwise, the cachedResponse will be null and the outer promise will resolve with undefined.
-                // The client-side app.js needs to handle this fallback/error.
-                return cachedResponse; // Return cached data if network fails
+                console.log("Service Worker: Network fetch failed for API:", error);
+                return cachedResponse; // Jika gagal, pakai cache jika ada
               });
 
-            // Return cached data immediately if available, otherwise wait for network
+            // Return cache dulu jika ada, sambil tetap fetch di background
             return cachedResponse || fetchPromise;
           });
         })
         .catch((error) => {
           console.error("Service Worker: API cache access error:", error);
-          return fetch(event.request); // Fallback to network if cache fails
+          return fetch(event.request); // Jika gagal buka cache, fallback ke jaringan
         })
     );
   }
-  // Default: go to network for anything else (e.g., external links)
+
+  // Default: Ambil langsung dari network untuk selain App Shell & API
   else {
     event.respondWith(fetch(event.request));
   }

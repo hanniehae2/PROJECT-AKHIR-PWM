@@ -1,35 +1,41 @@
-/* General Styling */
+/* ======================= */
+/* General Styling         */
+/* ======================= */
+
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif; /* Font utama */
   margin: 0;
   padding: 0;
-  background-color: #f4f7f6;
-  color: #333;
+  background-color: #f4f7f6; /* Warna latar belakang */
+  color: #333; /* Warna teks utama */
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1200px; /* Lebar maksimal kontainer */
   margin: 0 auto;
   padding: 20px;
 }
 
-/* Navbar */
+/* ======================= */
+/* Navbar                  */
+/* ======================= */
+
 .navbar {
-  background-color: #2c3e50;
+  background-color: #2c3e50; /* Warna latar navbar */
   color: #fff;
   padding: 15px 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Bayangan navbar */
 }
 
 .navbar .container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; /* Menyusun elemen secara horizontal & rata tengah */
 }
 
 .navbar h1 {
   margin: 0;
-  font-size: 1.8em;
+  font-size: 1.8em; /* Ukuran judul */
 }
 
 .nav-links a {
@@ -37,24 +43,26 @@ body {
   text-decoration: none;
   margin-left: 20px;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease; /* Animasi hover */
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: #3498db;
+  color: #3498db; /* Warna saat hover/active */
 }
 
 .nav-links i {
-  margin-right: 5px;
+  margin-right: 5px; /* Jarak antara ikon & teks */
 }
 
-/* Search Section */
+/* ======================= */
+/* Search Section          */
+/* ======================= */
+
 .search-section {
   display: flex;
   gap: 10px;
-  margin-bottom: 30px;
-  margin-top: 30px;
+  margin: 30px 0;
 }
 
 .search-section input[type="text"] {
@@ -80,7 +88,10 @@ body {
   background-color: #2980b9;
 }
 
-/* Game List Section */
+/* ======================= */
+/* Game List Section       */
+/* ======================= */
+
 .section-title {
   color: #2c3e50;
   text-align: center;
@@ -90,10 +101,7 @@ body {
 
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(280px, 1fr)
-  ); /* Responsive grid */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Grid responsif */
   gap: 25px;
 }
 
@@ -105,31 +113,29 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
-  cursor: pointer; /* Indicate clickable */
+  cursor: pointer; /* Tanda bahwa elemen bisa diklik */
 }
 
 .game-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px); /* Naik saat hover */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .game-card img {
   width: 100%;
-  height: 180px; /* Fixed height for thumbnails */
-  object-fit: cover; /* Crop images to fit */
-  display: block;
+  height: 180px; /* Tinggi tetap */
+  object-fit: cover; /* Potong gambar */
 }
 
 .game-card .card-content {
   padding: 15px;
-  flex-grow: 1; /* Allow content to push footer down */
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
 .game-card h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
   font-size: 1.4em;
   color: #2c3e50;
 }
@@ -142,7 +148,7 @@ body {
 }
 
 .game-card .details {
-  margin-top: auto; /* Push details to the bottom */
+  margin-top: auto; /* Taruh di bawah */
   font-size: 0.85em;
   color: #777;
 }
@@ -152,24 +158,30 @@ body {
   margin-bottom: 3px;
 }
 
-/* Info Messages */
+/* ======================= */
+/* Info Messages           */
+/* ======================= */
+
 .info-message {
   text-align: center;
-  grid-column: 1 / -1; /* Make messages span all columns */
+  grid-column: 1 / -1; /* Span ke semua kolom */
   font-size: 1.2em;
   padding: 20px;
   color: #555;
 }
 
 .offline-info {
-  color: #e67e22; /* Orange for offline warning */
+  color: #e67e22; /* Warna oranye */
 }
 
 .error-info {
-  color: #e74c3c; /* Red for error */
+  color: #e74c3c; /* Warna merah */
 }
 
-/* Footer */
+/* ======================= */
+/* Footer                  */
+/* ======================= */
+
 footer {
   background-color: #2c3e50;
   color: #fff;
@@ -179,7 +191,10 @@ footer {
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Detail Page Specific Styles */
+/* ======================= */
+/* Detail Page             */
+/* ======================= */
+
 .detail-section {
   margin-top: 30px;
 }
@@ -211,7 +226,7 @@ footer {
 
 .detail-thumbnail {
   width: 100%;
-  max-width: 500px; /* Limit image width */
+  max-width: 500px;
   height: auto;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -221,7 +236,7 @@ footer {
 .detail-content {
   width: 100%;
   max-width: 700px;
-  text-align: center; /* Center content */
+  text-align: center;
 }
 
 .detail-content h2 {
@@ -242,7 +257,7 @@ footer {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
   margin-bottom: 20px;
-  text-align: left; /* Align info text to left */
+  text-align: left;
   font-size: 0.95em;
 }
 
@@ -256,7 +271,7 @@ footer {
   font-size: 1em;
   line-height: 1.7;
   color: #444;
-  text-align: justify; /* Justify long description */
+  text-align: justify;
   margin-bottom: 30px;
 }
 
@@ -264,9 +279,10 @@ footer {
   display: flex;
   justify-content: center;
   gap: 15px;
-  flex-wrap: wrap; /* Allow wrapping on small screens */
+  flex-wrap: wrap;
 }
 
+/* Tombol Favorit & Play */
 .favorite-button,
 .play-button {
   padding: 12px 25px;
@@ -276,7 +292,7 @@ footer {
   font-size: 1.1em;
   font-weight: 600;
   transition: all 0.3s ease;
-  text-decoration: none; /* For play-button anchor */
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -292,7 +308,7 @@ footer {
 }
 
 .favorite-button.favorited {
-  background-color: #27ae60; /* Green when favorited */
+  background-color: #27ae60;
 }
 
 .favorite-button.favorited:hover {
@@ -308,7 +324,10 @@ footer {
   background-color: #2980b9;
 }
 
-/* Favorite List Page (similar to main list but without search) */
+/* ======================= */
+/* Favorite List Page      */
+/* ======================= */
+
 .favorite-list-section {
   margin-top: 30px;
 }
@@ -322,7 +341,7 @@ footer {
   cursor: pointer;
   font-size: 0.9em;
   margin-top: 10px;
-  align-self: flex-end; /* Push button to bottom right */
+  align-self: flex-end;
   transition: background-color 0.3s ease;
 }
 
@@ -330,7 +349,10 @@ footer {
   background-color: #c0392b;
 }
 
-/* Responsive Adjustments */
+/* ======================= */
+/* Responsive Design       */
+/* ======================= */
+
 @media (max-width: 768px) {
   .navbar h1 {
     font-size: 1.5em;
@@ -342,10 +364,10 @@ footer {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
   .detail-content {
-    padding: 0 10px; /* More padding on smaller screens */
+    padding: 0 10px;
   }
   .game-info {
-    grid-template-columns: 1fr; /* Single column for info on small screens */
+    grid-template-columns: 1fr;
   }
 }
 
@@ -368,7 +390,7 @@ footer {
     width: 100%;
   }
   .game-grid {
-    grid-template-columns: 1fr; /* Single column on very small screens */
+    grid-template-columns: 1fr;
   }
   .game-detail-card {
     padding: 15px;
