@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     detailElement.innerHTML = ''; // Bersihkan konten sebelumnya
 
     try {
-        const API_DETAIL_URL = `https://proxy-server-production-14c6.up.railway.app/api/games?id=${gameId}`; // URL API buat ambil detail game
+        const API_DETAIL_URL = `https://proxy-server-production-14c6.up.railway.app/api/game?id=${gameId}`; // URL API buat ambil detail game
         let game;
 
         // Coba fetch dari internet dulu
