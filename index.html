@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAMEVERSE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <h1>GAMEVERSE</h1>
+                <div class="nav-links">
+                    <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
+                    <a href="favorites.html"><i class="fas fa-heart"></i> Favorites</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="search-section">
+            <input type="text" id="searchInput" placeholder="Cari Game...">
+            <button id="searchButton"><i class="fas fa-search"></i> Cari</button>
+        </section>
+
+        <section class="game-list-section">
+            <h2 class="section-title">Daftar Game Gratis</h2>
+            <div id="gameList" class="game-grid">
+                <p id="loadingMessage" class="info-message">Memuat game...</p>
+                <p id="offlineMessage" class="info-message offline-info" style="display: none;">Anda sedang offline.
+                    Menampilkan game dari cache.</p>
+                <p id="errorMessage" class="info-message error-info" style="display: none;">Terjadi kesalahan saat
+                    memuat game. Coba lagi nanti.</p>
+                <p id="noResultsMessage" class="info-message" style="display: none;">Tidak ada game yang ditemukan.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 GAMEVERSE x ARDHEA. All rights reserved.</p>
+    </footer>
+
+    <script src="idb-utility.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

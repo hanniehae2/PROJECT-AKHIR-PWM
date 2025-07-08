@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Favorit - GAMEVERSE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <h1>GAMEVERSE</h1>
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                    <a href="favorites.html" class="active"><i class="fas fa-heart"></i> Favorites</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="favorite-list-section">
+            <h2 class="section-title">Game Favoritku</h2>
+            <div id="favoriteGameList" class="game-grid">
+                <p id="noFavoritesMessage" class="info-message">Belum ada game favorit. Tambahkan beberapa dari daftar!
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 GAMEVERSE x ARDHEA. All rights reserved.</p>
+    </footer>
+
+    <script src="idb-utility.js"></script>
+    <script>
+        // Logic for favorites.html
+        document.addEventListener('DOMContentLoaded', async () => {
+            const favoriteGameList = document.getElementById('favoriteGameList');
+            const noFavoritesMessage = document.getElementById('noFavoritesMessage');
+
+            async function loadFavorites() {
+                const favorites = await getAllFavoriteGames();
+                favoriteGameList.innerHTML = ''; // Clear previous content
+
+                if (favorites.length === 0) {
+                    noFavoritesMessage.style.display = 'block';
+                } else {
+                    noFavoritesMessage.style.display = 'none';
+                    favorites.forEach(game => {
+                        const gameCard = document.createElement('div');
+                        gameCard.classList.add('game-card');
+                        gameCard.innerHTML = `
+                            <img src="${game.thumbnail}" alt="${game.title}">
+                            <div class="card-content">
+                                <h3>${game.title}</h3>
+                                <p>${game.short_description}</p>
+                                <div class="details">
+                                    <span>Genre: ${game.genre}</span>
+                                    <span>Platform: ${game.platform}</span>
+                                </div>
+                                <button class="remove-favorite-button" data-id="${game.id}"><i class="fas fa-trash"></i> Hapus</button>
+                            </div>
+                        `;
+                        gameCard.querySelector('.remove-favorite-button').addEventListener('click', async (e) => {
+                            const gameId = parseInt(e.target.dataset.id || e.target.closest('button').dataset.id);
+                            await removeFavoriteGame(gameId);
+                            alert(`"${game.title}" dihapus dari favorit.`);
+                            loadFavorites(); // Reload list after removal
+                        });
+                        // Add click listener for detail page navigation
+                        gameCard.addEventListener('click', (e) => {
+                            // Ensure click on button doesn't trigger detail navigation
+                            if (!e.target.closest('.remove-favorite-button')) {
+                                window.location.href = `detail.html?id=${game.id}`;
+                            }
+                        });
+                        favoriteGameList.appendChild(gameCard);
+                    });
+                }
+            }
+
+            loadFavorites();
+        });
+    </script>
+</body>
+
+</html>

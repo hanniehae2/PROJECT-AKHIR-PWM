@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Game - GAMEVERSE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <h1>GAMEVERSE</h1>
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                    <a href="favorites.html"><i class="fas fa-heart"></i> Favorites</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="detail-section">
+            <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Kembali ke Daftar Game</a>
+            <div id="gameDetail" class="game-detail-card">
+                <p id="detailLoadingMessage" class="info-message">Memuat detail game...</p>
+                <p id="detailErrorMessage" class="info-message error-info" style="display: none;">Gagal memuat detail
+                    game. Game mungkin tidak ditemukan atau Anda sedang offline.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 GAMEVERSE x ARDHEA. All rights reserved.</p>
+    </footer>
+
+    <script src="idb-utility.js"></script>
+    <script>
+        // Logic for detail.html (can be part of app.js or a separate script if preferred)
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameId = urlParams.get('id');
+            const detailElement = document.getElementById('gameDetail');
+            const detailLoadingMessage = document.getElementById('detailLoadingMessage');
+            const detailErrorMessage = document.getElementById('detailErrorMessage');
+
+            if (!gameId) {
+                detailLoadingMessage.style.display = 'none';
+                detailErrorMessage.style.display = 'block';
+                detailErrorMessage.textContent = 'ID Game tidak ditemukan.';
+                return;
+            }
+
+            detailLoadingMessage.style.display = 'block';
+            detailErrorMessage.style.display = 'none';
+            detailElement.innerHTML = ''; // Clear previous content
+
+            try {
+                const API_DETAIL_URL = `http://localhost:3000/api/game?id=${gameId}`;
+                let game;
+
+                // Try fetching from network first
+                try {
+                    const response = await fetch(API_DETAIL_URL);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    game = await response.json();
+                } catch (networkError) {
+                    console.warn("Network fetch failed for game detail, trying cache/IndexedDB:", networkError);
+                    // Fallback to cache/IndexedDB if network fails or specific detail not found
+                    // First check Cache API (if SW cached individual game details)
+                    const cachedResponse = await caches.match(API_DETAIL_URL);
+                    if (cachedResponse) {
+                        game = await cachedResponse.json();
+                    } else {
+                        // Fallback to IndexedDB for favorites if not in API cache
+                        game = await getFavoriteGame(parseInt(gameId)); // Assuming getFavoriteGame from idb-utility.js
+                        if (!game) {
+                            throw new Error("Game not found in cache or favorites.");
+                        }
+                    }
+                }
+
+                if (game) {
+                    renderGameDetail(game);
+                } else {
+                    throw new Error("Game data not available.");
+                }
+                detailLoadingMessage.style.display = 'none';
+            } catch (error) {
+                console.error("Error loading game detail:", error);
+                detailLoadingMessage.style.display = 'none';
+                detailErrorMessage.style.display = 'block';
+            }
+        });
+
+        async function renderGameDetail(game) {
+            const detailElement = document.getElementById('gameDetail');
+            detailElement.innerHTML = `
+                <img src="${game.thumbnail}" alt="${game.title}" class="detail-thumbnail">
+                <div class="detail-content">
+                    <h2>${game.title}</h2>
+                    <p class="short-description">${game.short_description}</p>
+                    <div class="game-info">
+                        <span><strong>Genre:</strong> ${game.genre}</span>
+                        <span><strong>Platform:</strong> ${game.platform}</span>
+                        <span><strong>Publisher:</strong> ${game.publisher}</span>
+                        <span><strong>Developer:</strong> ${game.developer}</span>
+                        <span><strong>Release Date:</strong> ${game.release_date}</span>
+                    </div>
+                    <p class="description">${game.description || ''}</p>
+                    <div class="detail-actions">
+                        <button id="favoriteButton" class="favorite-button"><i class="fas fa-heart"></i> Tambah ke Favorit</button>
+                        <a href="${game.game_url}" target="_blank" rel="noopener" class="play-button"><i class="fas fa-play-circle"></i> Main Sekarang</a>
+                    </div>
+                </div>
+            `;
+
+            const favoriteButton = document.getElementById('favoriteButton');
+            await updateFavoriteButton(game.id, favoriteButton); // Update initial state
+            favoriteButton.addEventListener('click', () => toggleFavorite(game, favoriteButton));
+        }
+
+        async function updateFavoriteButton(gameId, buttonElement) {
+            const isFavorited = await isGameFavorited(gameId);
+            if (isFavorited) {
+                buttonElement.innerHTML = '<i class="fas fa-heart"></i> Sudah Favorit';
+                buttonElement.classList.add('favorited');
+            } else {
+                buttonElement.innerHTML = '<i class="far fa-heart"></i> Tambah ke Favorit';
+                buttonElement.classList.remove('favorited');
+            }
+        }
+
+        async function toggleFavorite(game, buttonElement) {
+            const isFavorited = await isGameFavorited(game.id);
+            if (isFavorited) {
+                await removeFavoriteGame(game.id);
+                alert(`"${game.title}" dihapus dari favorit.`);
+            } else {
+                await addFavoriteGame(game);
+                alert(`"${game.title}" ditambahkan ke favorit!`);
+            }
+            await updateFavoriteButton(game.id, buttonElement); // Update button state
+        }
+    </script>
+</body>
+
+</html>
