@@ -1,3 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Metadata dasar halaman -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Game - GAMEVERSE</title>
+
+    <!-- Link ke file CSS utama untuk styling halaman -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Link ke manifest.json untuk dukungan Progressive Web App (PWA) -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Font Poppins dari Google Fonts untuk tampilan modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome untuk ikon seperti heart, play, dll -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+    <!-- Bagian Header dan Navigasi -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <h1>GAMEVERSE</h1>
+                <div class="nav-links">
+                    <!-- Tautan navigasi ke halaman utama dan favorit -->
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                    <a href="favorites.html"><i class="fas fa-heart"></i> Favorites</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Konten Utama Halaman -->
+    <main class="container">
+        <section class="detail-section">
+            <!-- Tombol kembali ke daftar game -->
+            <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Kembali ke Daftar Game</a>
+
+            <!-- Elemen ini akan diisi dengan detail game -->
+            <div id="gameDetail" class="game-detail-card">
+                <p id="detailLoadingMessage" class="info-message">Memuat detail game...</p>
+                <p id="detailErrorMessage" class="info-message error-info" style="display: none;">
+                    Gagal memuat detail game. Game mungkin tidak ditemukan atau Anda sedang offline.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer halaman -->
+    <footer>
+        <p>&copy; 2025 GAMEVERSE x ARDHEA. All rights reserved.</p>
+    </footer>
 <script src="idb-utility.js"></script>
 <script>
 // Saat halaman selesai dimuat
@@ -120,3 +177,6 @@ async function toggleFavorite(game, buttonElement) {
     await updateFavoriteButton(game.id, buttonElement); // Update tampilan tombol
 }
 </script>
+</body>
+
+</html>
