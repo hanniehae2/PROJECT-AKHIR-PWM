@@ -1,4 +1,71 @@
-<script src="idb-utility.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Menentukan encoding karakter untuk dokumen HTML -->
+    <meta charset="UTF-8">
+
+    <!-- Memastikan tampilan responsif di berbagai ukuran layar -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Judul halaman yang akan muncul di tab browser -->
+    <title>Game Favorit - GAMEVERSE</title>
+
+    <!-- Menyisipkan file CSS eksternal untuk styling -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Link ke file manifest untuk konfigurasi PWA (Progressive Web App) -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Menggunakan font Poppins dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Menyisipkan Font Awesome untuk ikon (versi 6.5.0) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+    <!-- Bagian header / navigasi atas -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <!-- Judul atau logo situs -->
+                <h1>GAMEVERSE</h1>
+
+                <!-- Navigasi menu -->
+                <div class="nav-links">
+                    <!-- Tautan ke halaman utama -->
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+
+                    <!-- Tautan ke halaman favorit, dengan kelas aktif -->
+                    <a href="favorites.html" class="active"><i class="fas fa-heart"></i> Favorites</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Konten utama halaman -->
+    <main class="container">
+        <section class="favorite-list-section">
+            <!-- Judul bagian -->
+            <h2 class="section-title">Game Favoritku</h2>
+
+            <!-- Kontainer untuk daftar game favorit -->
+            <div id="favoriteGameList" class="game-grid">
+                <!-- Pesan yang ditampilkan jika belum ada game favorit -->
+                <p id="noFavoritesMessage" class="info-message">
+                    Belum ada game favorit. Tambahkan beberapa dari daftar!
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bagian footer halaman -->
+    <footer>
+        <p>&copy; 2025 GAMEVERSE x ARDHEA. All rights reserved.</p>
+    </footer>
+
+    <script src="idb-utility.js"></script>
 <script>
 // Saat halaman selesai dimuat
 document.addEventListener('DOMContentLoaded', async () => {
@@ -57,3 +124,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadFavorites(); // Panggil fungsi pertama kali buat load data
 });
 </script>
+</body>
+
+</html>
